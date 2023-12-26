@@ -1,0 +1,89 @@
+(1). What they are va_start, va_arg, va_copy, va_end macros and have to use them? 
+
+GENERAL DEFINITION:
+
+The va_arg(), va_end(), and va_start() macros access the arguments to a function when it takes a fixed number of required arguments and a variable number of optional arguments. 
+You declare required arguments as ordinary parameters to the function and access the arguments through the parameter names.
+
+For the case of ft_print:
+
+int ft_printf(const char *, ...);
+
+const char * --> Fixed number of arguments, only one in this case.
+...          --> Variable number of argument.
+
+DETAILED DEFINITION, FORMAT AND LIBRARY:
+
+#define _ISOC99_SOURCE
+#include <stdarg.h>
+
+() va_start:
+
+void va_start(va_list arg_ptr, variable_name);
+
+-va_start sets 'arg_ptr' to the first optional argument in the list of arguments that's passed to the function. 
+-The argument 'arg_ptr' must have the va_list type.
+-The argument 'variable_name' is the identifier of the rightmost named parameter in the parameter list (preceding , …).
+
+-Some rules:
+va_start() macro must be used before va_arg() macro is used for the first time.
+ 
+Corresponding va_start() and va_end() macro calls must be in the same function. 
+
+If variable_name is declared as a register, with a function or an array type, or with a type that is not compatible 
+with the type that results after application of the default argument promotions, then the behavior is undefined.
+
+() va_arg:
+
+var_type va_arg(va_list arg_ptr, var_type);
+
+-The va_arg() macro retrieves a value of the given var_type from the location given by arg_ptr and increases arg_ptr 
+to point to the next argument in the list. 
+-The va_arg() macro can retrieve arguments from the list any number of times within the function.
+
+
+() va_end:
+
+void va_end(va_list arg_ptr);
+
+-The va_end() macro is needed by some systems to indicate the end of parameter scanning.
+
+() va_copy:
+
+void va_copy(va_list dest, va_list src);
+
+The va_copy() function creates a copy (dest) of a variable of type va_list (src). 
+The copy appear as if it has gone through a va_start() and the exact set of sequences of va_arg() as that of src.
+
+You can see an example in example.c 
+
+
+(2). Understanding the prototype of ft_printf.
+
+int ft_printf(const char *, ...);
+
+About the difference between define a function and declare her.
+https://stackoverflow.com/questions/56961714/how-can-a-parameter-have-type-but-no-name
+
+If you have read the article, now you know that when we are going to define our ft_printf:
+We do it simply like that:
+
+int	ft_printf(const char *str, ...);
+
+The original printf function returns the number of characters that are printed. 
+If there is some error then it returns a negative value.
+
+So, we have to consider to declare a variable which serves as a counter in our ft_printf
+and always increment it when we print a character:
+
+For the ft_putchar function that all know, it will be like that:
+    
+    int	ft_putchar(int c)
+    {
+	    write(1, &c, 1);
+	    return (1);
+    }
+
+(3). ALGORITHM 
+
+(-) In little words, we have to 
